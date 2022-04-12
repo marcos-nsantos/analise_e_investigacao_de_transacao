@@ -31,6 +31,9 @@
                         </span>
                     </label>
                 </div>
+                {% if form.arquivo.errors %}
+                    <p class="help is-danger">{{ form.arquivo.errors.0 | escape }}</p>
+                {% endif %}
             </div>
             <div class="field">
                 <div class="control">
