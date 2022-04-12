@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Analise e Investigação de Transações Financeiras</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Importar Transações</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="field">
+                <div class="file is-info has-name" id="fileInput">
+                    <label class="file-label">
+                        {{ form.arquivo }}
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <ion-icon name="cloud-upload-outline"></ion-icon>
+                            </span>
+                            <span class="file-label">
+                                Selecione o arquivo
+                            </span>
+                        </span>
+                        <span class="file-name">
+                            Nenhum arquivo selecionado
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary">Importar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="{% static 'transacao/js/fileInput.js' %}"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
