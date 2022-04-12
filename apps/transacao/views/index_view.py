@@ -1,3 +1,5 @@
+import csv
+
 from django.shortcuts import render, redirect
 
 from ..forms.arquivo_model_form import ArquivoForm
@@ -7,12 +9,12 @@ def index(request):
     if request.method == 'POST':
         form = ArquivoForm(request.POST, request.FILES)
         if form.is_valid():
-            csv_file = request.FILES['arquivo']
-            print(csv_file.name)
-            print(csv_file.size)
+            print(request.FILES['arquivo'].name)
+            print(request.FILES['arquivo'].size)
 
-            for line in csv_file.readlines():
-                print(line)
+            csv_file = request.FILES['arquivo'].read().decode('utf-8')
+            for row in csv.reader(csv_file.splitlines(), delimiter=','):
+                print(row)
 
             form.save()
             return redirect('transacao:index')
