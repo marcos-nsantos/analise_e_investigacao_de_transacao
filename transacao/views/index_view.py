@@ -7,8 +7,13 @@ def index(request):
     if request.method == 'POST':
         form = ArquivoForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES['arquivo'].name)
-            print(request.FILES['arquivo'].size)
+            csv_file = request.FILES['arquivo']
+            print(csv_file.name)
+            print(csv_file.size)
+
+            for line in csv_file.readlines():
+                print(line)
+
             form.save()
             return redirect('transacao:index')
     else:
