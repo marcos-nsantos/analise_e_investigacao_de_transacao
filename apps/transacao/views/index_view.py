@@ -15,7 +15,7 @@ def index(request):
         form = ArquivoForm(request.POST, request.FILES)
         if form.is_valid():
             csv_file = request.FILES['arquivo'].read().decode('utf-8')
-            data_hora_primeira_linha = capture_first_date_time_from_csv_file(csv_file)
+            datetime_fist_line = capture_first_date_time_from_csv_file(csv_file)
 
             error_messages = []
             try:
@@ -34,14 +34,14 @@ def index(request):
                             valor = float(row[6])
                             data_hora = datetime.strptime(row[7], '%Y-%m-%dT%H:%M:%S')
 
-                            if data_hora_primeira_linha.date() == data_hora.date() and not transaction_already_exists(
+                            if equal_dates(datetime_fist_line, data_hora) and not transaction_already_exists(
                                     banco_origem, agencia_origem, conta_origem, banco_destino, agencia_destino,
                                     conta_destino, data_hora, valor):
-                                transacao = Transacao(arquivo=instance, data_hora=data_hora_primeira_linha,
-                                                      banco_origem=banco_origem,
-                                                      agencia_origem=agencia_origem, conta_origem=conta_origem,
-                                                      banco_destino=banco_destino, agencia_destino=agencia_destino,
-                                                      conta_destino=conta_destino, valor=valor)
+                                transacao = Transacao(arquivo=instance, data_hora=datetime_fist_line,
+                                                      banco_origem=banco_origem, agencia_origem=agencia_origem,
+                                                      conta_origem=conta_origem, banco_destino=banco_destino,
+                                                      agencia_destino=agencia_destino, conta_destino=conta_destino,
+                                                      valor=valor)
                                 transacao.full_clean()
                                 transacao.save()
                             elif transaction_already_exists(banco_origem, agencia_origem, conta_origem, banco_destino,
@@ -70,6 +70,10 @@ def capture_first_date_time_from_csv_file(arquivo_csv):
     arquivo_csv = arquivo_csv.splitlines()
     data_e_hora = arquivo_csv[0].split(',')[-1]
     return datetime.strptime(data_e_hora, '%Y-%m-%dT%H:%M:%S')
+
+
+def equal_dates(date1, date2):
+    return date1.date() == date2.date()
 
 
 def transaction_already_exists(banco_origem, agencia_origem, conta_origem, banco_destino, agencia_destino,
