@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 
 from environ import environ
+from django.contrib.messages import constants as messages
 
 env = environ.Env(
     # set casting, default value
@@ -135,3 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Project root
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
+
+# Messages
+# https://docs.djangoproject.com/en/3.2/ref/settings/#messages-framework
+MESSAGE_TAGS = {
+    messages.ERROR: 'is-danger',
+    messages.SUCCESS: 'is-success',
+}
