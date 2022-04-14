@@ -15,7 +15,7 @@ def index(request):
         form = ArquivoForm(request.POST, request.FILES)
         if form.is_valid():
             csv_file = request.FILES['arquivo'].read().decode('utf-8')
-            data_hora_primeira_linha = capture_date_time_from_csv_file(csv_file)
+            data_hora_primeira_linha = capture_first_date_time_from_csv_file(csv_file)
 
             error_messages = []
             try:
@@ -66,7 +66,7 @@ def index(request):
     return render(request, 'transacao/index.html', {'form': form})
 
 
-def capture_date_time_from_csv_file(arquivo_csv):
+def capture_first_date_time_from_csv_file(arquivo_csv):
     arquivo_csv = arquivo_csv.splitlines()
     data_e_hora = arquivo_csv[0].split(',')[-1]
     return datetime.strptime(data_e_hora, '%Y-%m-%dT%H:%M:%S')
