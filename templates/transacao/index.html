@@ -52,6 +52,30 @@
     </div>
 </section>
 
+<!-- Tabela de Importações realizadas com o titulo no centro -->
+<!-- Data Transações e Data Importação -->
+<section class="section">
+    <div class="container">
+        <h1 class="title has-text-centered">Transações</h1>
+        <table class="table is-fullwidth">
+            <thead>
+            <tr>
+                <td style="font-weight: bold">Data Transação</td>
+                <td style="font-weight: bold">Data Importação</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transacao in transacoes %}
+                <tr>
+                    <td>{{ transacao.data_hora }}</td>
+                    <td>{{ transacao.arquivo.created_at }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
 <script src="{% static 'transacao/js/fileInput.js' %}"></script>
 <script src="{% static 'transacao/js/notification.js' %}"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

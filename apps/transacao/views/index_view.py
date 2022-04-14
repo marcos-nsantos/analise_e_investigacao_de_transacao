@@ -63,7 +63,7 @@ def index(request):
 
     else:
         form = ArquivoForm()
-    return render(request, 'transacao/index.html', {'form': form})
+    return render(request, 'transacao/index.html', {'form': form, 'transacoes': Transacao.objects.all()})
 
 
 def capture_first_date_time_from_csv_file(arquivo_csv):
