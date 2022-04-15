@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from .arquivo_model import Arquivo
 
@@ -24,3 +25,18 @@ class Transacao(models.Model):
 
     def __str__(self):
         return f'{self.conta_origem} - {self.conta_destino} - {self.valor}'
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            if Transacao.objects.filter(banco_origem__exact=self.banco_origem,
+                                        agencia_origem__exact=self.agencia_origem,
+                                        conta_origem__exact=self.conta_origem, banco_destino__exact=self.banco_destino,
+                                        agencia_destino__exact=self.agencia_destino,
+                                        conta_destino__exact=self.conta_destino, data_hora__year=self.data_hora.year,
+                                        data_hora__month=self.data_hora.month,
+                                        data_hora__day=self.data_hora.day).exists():
+                raise ValidationError(_(f'Transação do banco {self.banco_origem}, agência {self.agencia_origem}, ' +
+                                        f'conta {self.conta_origem} para o banco {self.banco_destino}, agência ' +
+                                        f'{self.agencia_destino}, conta {self.conta_destino} já existe com a data, ' +
+                                        f'{self.data_hora.date()}'))
+        super(Transacao, self).save(*args, **kwargs)

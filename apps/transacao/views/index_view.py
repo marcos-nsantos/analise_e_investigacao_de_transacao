@@ -18,49 +18,38 @@ def index(request):
             datetime_fist_line = capture_first_date_time_from_csv_file(csv_file)
 
             error_messages = []
-            try:
-                with transaction.atomic():
-                    instance = form.save(commit=False)
-                    instance.save()
 
-                    for row in csv.reader(csv_file.splitlines(), delimiter=','):
-                        try:
-                            banco_origem = row[0]
-                            agencia_origem = row[1]
-                            conta_origem = row[2]
-                            banco_destino = row[3]
-                            agencia_destino = row[4]
-                            conta_destino = row[5]
-                            valor = float(row[6])
-                            data_hora = datetime.strptime(row[7], '%Y-%m-%dT%H:%M:%S')
+            with transaction.atomic():
+                instance = form.save(commit=False)
+                instance.save()
+                messages.success(request, 'Arquivo salvo com sucesso!')
 
-                            if equal_dates(datetime_fist_line, data_hora) and not transaction_already_exists(
-                                    banco_origem, agencia_origem, conta_origem, banco_destino, agencia_destino,
-                                    conta_destino, data_hora, valor):
-                                transacao = Transacao(arquivo=instance, data_hora=datetime_fist_line,
-                                                      banco_origem=banco_origem, agencia_origem=agencia_origem,
-                                                      conta_origem=conta_origem, banco_destino=banco_destino,
-                                                      agencia_destino=agencia_destino, conta_destino=conta_destino,
-                                                      valor=valor)
-                                transacao.full_clean()
-                                transacao.save()
-                            elif transaction_already_exists(banco_origem, agencia_origem, conta_origem, banco_destino,
-                                                            agencia_destino, conta_destino, data_hora, valor):
-                                error_messages.append(f'Não foi possível salvar a transação {row}. Pois esta já existe '
-                                                      f'em nossa base de dados.')
-                        except ValueError:
-                            pass
-                        except ValidationError:
-                            pass
-            except Exception as e:
-                print(e)
-            else:
-                messages.success(request, 'Arquivo importado com sucesso!')
+                for row in csv.reader(csv_file.splitlines(), delimiter=','):
+                    try:
+                        banco_origem = row[0]
+                        agencia_origem = row[1]
+                        conta_origem = row[2]
+                        banco_destino = row[3]
+                        agencia_destino = row[4]
+                        conta_destino = row[5]
+                        valor = float(row[6])
+                        data_hora = datetime.strptime(row[7], '%Y-%m-%dT%H:%M:%S')
+
+                        if equal_dates(datetime_fist_line, data_hora):
+                            continue
+
+                        Transacao.objects.create(arquivo=instance, banco_origem=banco_origem,
+                                                 agencia_origem=agencia_origem, conta_origem=conta_origem,
+                                                 banco_destino=banco_destino, agencia_destino=agencia_destino,
+                                                 conta_destino=conta_destino, valor=valor, data_hora=data_hora)
+                    except ValueError:
+                        pass
+                    except ValidationError as e:
+                        error_messages.append(e.message)
 
             if error_messages:
                 for error_message in error_messages:
                     messages.error(request, error_message)
-
     else:
         form = ArquivoForm()
     return render(request, 'transacao/index.html', {'form': form, 'transacoes': Transacao.objects.all()})
@@ -74,14 +63,3 @@ def capture_first_date_time_from_csv_file(arquivo_csv):
 
 def equal_dates(date1, date2):
     return date1.date() == date2.date()
-
-
-def transaction_already_exists(banco_origem, agencia_origem, conta_origem, banco_destino, agencia_destino,
-                               conta_destino, data_hora, valor):
-    is_transaction = Transacao.objects.filter(banco_origem=banco_origem, agencia_origem=agencia_origem,
-                                              conta_origem=conta_origem,
-                                              banco_destino=banco_destino, agencia_destino=agencia_destino,
-                                              conta_destino=conta_destino, data_hora__year=data_hora.year,
-                                              data_hora__month=data_hora.month, data_hora__day=data_hora.day,
-                                              valor=valor).exists()
-    return is_transaction
