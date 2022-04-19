@@ -5,8 +5,8 @@ from ..validators.csv_file import is_csv_file, is_file_empty
 
 
 class Arquivo(models.Model):
-    arquivo = models.FileField(_('Arquivo'), upload_to='arquivos_csv/', null=True, blank=True, validators=[is_csv_file,
-                                                                                                           is_file_empty])
+    arquivo = models.FileField(_('Arquivo'), upload_to='arquivos_csv/', null=False, blank=False,
+                               validators=[is_csv_file, is_file_empty])
     created_at = models.DateTimeField(_('Criado em'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Atualizado em'), auto_now=True)
 
