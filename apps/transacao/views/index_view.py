@@ -4,6 +4,7 @@ from csv import reader
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views import View
 
@@ -27,7 +28,6 @@ class TransacaoView(View):
             datetime_fist_line = capture_first_date_time_from_csv_file(csv_file)
 
             error_messages = []
-
             for row in reader(csv_file.splitlines(), delimiter=','):
                 banco_origem = row[0]
                 agencia_origem = row[1]
@@ -36,14 +36,16 @@ class TransacaoView(View):
                 agencia_destino = row[4]
                 conta_destino = row[5]
 
+                if "" in row:
+                    continue
+
                 try:
                     valor = float(row[6])
                     data_hora = datetime.strptime(row[7], '%Y-%m-%dT%H:%M:%S')
                 except ValueError:
                     continue
 
-                if data_hora.date() == datetime_fist_line.date():
-                    print('Data diferente')
+                if data_hora.date() != datetime_fist_line.date():
                     continue
 
                 try:
