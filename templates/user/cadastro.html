@@ -1,11 +1,41 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Cadastro{% endblock %}
+{% block title %}
+Cadastro
+{% endblock %}
 
-{% block body %}
+{% block content %}
     <section class="section">
-    <div class="container">
-        <h1 class="title">Cadastro</h1>
-    </div>
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="box">
+                        <h1 class="title">Cadastrar Usuário</h1>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                {% if field.type == 'hidden' %}
+                                    {{ field }}
+                                {% else %}
+                                    <div class="field">
+                                        <label class="label">{{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+
+                                    {% for error in field.errors %}
+                                        <p class="help is-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-primary">Cadastrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 {% endblock %}
