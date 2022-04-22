@@ -1,6 +1,7 @@
 from datetime import datetime
 from csv import reader
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import IntegrityError
@@ -13,7 +14,7 @@ from ..models.transacao_model import Transacao
 from ..util.capture_first_csv_date import capture_first_date_time_from_csv_file
 
 
-class TransacaoView(View):
+class TransacaoView(LoginRequiredMixin, View):
     form_class = FileUploadForm
     template_name = 'transacao/index.html'
 

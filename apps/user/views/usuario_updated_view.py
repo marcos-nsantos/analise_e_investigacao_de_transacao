@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.views.generic import UpdateView
 from django.urls import reverse_lazy
@@ -6,7 +7,7 @@ from ..models.user_model import User
 from ..forms.update_form import UserUpdateForm
 
 
-class UsuarioUpdateView(UpdateView):
+class UsuarioUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
     template_name = 'user/update_usuario.html'

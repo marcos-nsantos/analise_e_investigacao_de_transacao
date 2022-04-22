@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy
@@ -5,7 +6,7 @@ from django.urls import reverse_lazy
 from ..models.user_model import User
 
 
-class UsuarioDeleteView(DeleteView):
+class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     success_url = reverse_lazy('user:lista')
     template_name = 'user/deletar_usuario.html'

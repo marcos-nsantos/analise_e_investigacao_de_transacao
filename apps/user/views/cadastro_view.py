@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
@@ -10,7 +11,7 @@ from ..models.user_model import User
 from ..forms.sign_up_form import SignUpForm
 
 
-class CadastroCreateView(CreateView):
+class CadastroCreateView(LoginRequiredMixin, CreateView):
     model = User
     form_class = SignUpForm
     template_name = 'user/cadastro.html'
