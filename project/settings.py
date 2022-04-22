@@ -165,3 +165,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=False)
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/user/login/'
