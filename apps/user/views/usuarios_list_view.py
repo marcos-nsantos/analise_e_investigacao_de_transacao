@@ -9,4 +9,4 @@ class UsuariosListView(ListView):
     context_object_name = 'usuarios'
 
     def get_queryset(self):
-        return User.objects.all()
+        return User.objects.filter(is_superuser=False)
