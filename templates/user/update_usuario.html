@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Atualizar dados de {{ usuario }}{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8 is-offset-2">
+                    <h1 class="title">Atualizar dados de {{ usuario }}</h1>
+                    <form method="post" action="{% url 'user:update' usuario.id %}">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="field">
+                                <label class="label">{{ field.label }}</label>
+                                <div class="control">
+                                    {{ field }}
+                                </div>
+                                <p class="help is-danger">{{ field.errors|first }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Atualizar</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-text" href="{% url 'user:lista' %}">Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

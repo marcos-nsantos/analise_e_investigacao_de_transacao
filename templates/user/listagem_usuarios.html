@@ -24,7 +24,7 @@
                                     <td>{{ usuario }}</td>
                                     <td>{{ usuario.email }}</td>
                                     <td>
-                                        <a href="#" class="button is-warning">Editar</a>
+                                        <a href="{% url 'user:update' usuario.id %}" class="button is-warning">Editar</a>
                                         <a href="{% url 'user:delete' usuario.id %}" class="button is-danger">Excluir</a>
                                     </td>
                                 </tr>
