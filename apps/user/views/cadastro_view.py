@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.views.generic import CreateView
+from django.contrib.auth import get_user_model
 
 from ..models.user_model import User
 from ..forms.sign_up_form import SignUpForm
@@ -22,9 +23,9 @@ class CadastroCreateView(CreateView):
         self.send_email(form.instance)
         return super().form_valid(form)
 
-    def save_user(self, form, hash_password):
+    def save_user(self, form, password):
         user = form.save(commit=False)
-        user.set_password(self.__password)
+        user.set_password(password)
         user.save()
 
     def generate_random_password(self, length=6):
