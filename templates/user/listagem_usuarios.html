@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Usuários Cadastrados{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8 is-offset-2">
+                    <h1 class="title has-text-centered">Usuários Cadastrados</h1>
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for usuario in usuarios %}
+                                <tr>
+                                    <td>{{ usuario.id }}</td>
+                                    <td>{{ usuario }}</td>
+                                    <td>{{ usuario.email }}</td>
+                                    <td>
+                                        <a href="#" class="button is-warning">Editar</a>
+                                        <a href="#" class="button is-danger">Excluir</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
