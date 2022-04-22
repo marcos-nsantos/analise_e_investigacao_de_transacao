@@ -14,12 +14,12 @@ class CadastroCreateView(CreateView):
     model = User
     form_class = SignUpForm
     template_name = 'user/cadastro.html'
-    success_url = reverse_lazy('transacao:index')
+    success_url = reverse_lazy('user:login')
     __password = None
 
     def form_valid(self, form):
-        password = self.generate_random_password()
-        self.save_user(form, password)
+        self.__password = self.generate_random_password()
+        self.save_user(form, self.__password)
         self.send_email(form.instance)
         return super().form_valid(form)
 
