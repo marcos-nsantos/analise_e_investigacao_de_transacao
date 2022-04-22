@@ -1,0 +1,45 @@
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'transacao:index' %}">
+                <h1 class="subtitle">Analise de Transações</h1>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+               data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            {% if user.is_authenticated %}
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{% url 'transacao:index' %}">
+                        Inicio
+                    </a>
+                    <a class="navbar-item" href="{% url 'user:lista' %}">
+                        Usuários
+                    </a>
+                </div>
+            {% endif %}
+            <div class="navbar-end">
+                {% if not user.is_authenticated %}
+                    <a class="navbar-item" href="">
+                        Login
+                    </a>
+                {% else %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Olá, {{ user }}
+                        </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

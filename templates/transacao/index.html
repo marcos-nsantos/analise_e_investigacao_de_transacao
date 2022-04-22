@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block content %}
+    {% include 'partials/navbar.html' %}
+
     <section class="section">
         <div class="container">
             <h1 class="title">Importar Transações</h1>
@@ -48,7 +50,7 @@
                 {% for transacao in transacoes %}
                     <tr>
                         <td>{{ transacao.data_hora }}</td>
-                        <td>{{ transacao.arquivo.created_at }}</td>
+                        <td>{{ transacao.created_at }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,5 +12,7 @@
 {% block content %}{% endblock %}
 
 {% block script %}{% endblock %}
+
+<script src="{% static 'partials/js/navbar.js' %}"></script>
 </body>
 </html>
