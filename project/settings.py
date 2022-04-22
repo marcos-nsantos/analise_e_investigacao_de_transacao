@@ -152,6 +152,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
 MESSAGE_TAGS = {
     messages.ERROR: 'is-danger',
     messages.SUCCESS: 'is-success',
+    messages.WARNING: 'is-warning',
 }
 
 # Send email
