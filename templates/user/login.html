@@ -8,7 +8,7 @@
             <div class="columns">
                 <div class="column is-half is-offset-one-quarter">
                     <div class="box">
-                        <h1 class="title">Entrar</h1>
+                        <h1 class="title has-text-centered">Entrar</h1>
 
                         {% if form.errors %}
                             <div class="notification is-danger">
@@ -18,21 +18,23 @@
 
                         <form method="post" action="{% url 'user:login' %}">
                             {% csrf_token %}
-                            {% for field in form %}
-                                <div class="field">
-                                    <label class="label">{{ field.label }}</label>
-                                    <div class="control">
-                                        <input class="input" type="{{ field.type }}" name="{{ field.name }}">
-                                    </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input class="input" type="email" name="username" placeholder="Email">
                                 </div>
-                            {% endfor %}
+                            </div>
 
-                            <div class="field is-grouped">
+                            <div class="field">
+                                <label class="label">Senha</label>
+                                <div class="control">
+                                    <input class="input" type="password" name="password" placeholder="Senha">
+                                </div>
+                            </div>
+
+                            <div class="field">
                                 <div class="control">
                                     <button class="button is-primary">Entrar</button>
-                                </div>
-                                <div class="control">
-                                    <a class="button is-text" href="{% url 'user:cadastro' %}">Não tenho uma conta</a>
                                 </div>
                             </div>
                         </form>
