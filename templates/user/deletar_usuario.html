@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Deletar {{ usuario }}{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <h1 class="title">Deletar Usuário</h1>
+                    <form method="post" action="{% url 'user:delete' usuario.id %}">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label class="label">Tem certeza que deseja deletar {{ usuario }}?</label>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-danger">Sim</button>
+                            </div>
+                            <div class="control">
+                                <a href="{% url 'user:lista' %}" class="button is-link">Não</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
