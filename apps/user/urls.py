@@ -3,7 +3,7 @@ from django.urls import path
 from .views.cadastro_view import CadastroCreateView
 from .views.usuarios_list_view import UsuariosListView
 from .views.usuario_delete_view import UsuarioDeleteView
-from .views.usuario_updated_view import UsuarioUpdateView
+from .views.usuario_update_view import UsuarioUpdateView
 from .views.usuario_login_view import UsuarioLoginView
 from .views.usuario_logout_view import UsuarioLogoutView
 
