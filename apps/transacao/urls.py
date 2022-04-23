@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .views import index_view
+from .views.index_view import TransacaoView
+from .views.transacao_detail_view import TransacaoDetailView
 
 app_name = 'transacao'
 urlpatterns = [
-    path('', index_view.TransacaoView.as_view(), name='index'),
+    path('', TransacaoView.as_view(), name='index'),
+    path('<int:pk>/', TransacaoDetailView.as_view(), name='detail'),
 ]

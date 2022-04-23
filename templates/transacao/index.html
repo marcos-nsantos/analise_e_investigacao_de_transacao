@@ -55,7 +55,7 @@
                         <td>{{ transacao.created_at }}</td>
                         <td>{{ transacao.user }}</td>
                         <td>
-                            <a href="" class="button is-primary">Detalhar</a>
+                            <a href="{% url 'transacao:detail' transacao.id %}" class="button is-primary">Detalhar</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -67,7 +67,6 @@
 
 {% block script %}
     <script src="{% static 'transacao/js/fileInput.js' %}"></script>
-    <script src="{% static 'transacao/js/notification.js' %}"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}

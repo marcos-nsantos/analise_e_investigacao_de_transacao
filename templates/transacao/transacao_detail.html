@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Importação{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <section class="section">
+        <div class="container">
+
+            <div class="columns">
+                <div class="column is-10 is-offset-1">
+                    <h1 class="title has-text-centered">
+                        Detalhes da Importação
+                    </h1>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-10 is-offset-1">
+                    <div class="field">
+                        <label class="label">Importado em</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ data.created_at }}" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Importado por</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ data.user }}" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Data da Transação</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ data.data }}" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-10 is-offset-1">
+                    <table class="table is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th colspan="3">Origem</th>
+                            <th colspan="3">Destino</th>
+                            <td rowspan="2">Valor</td>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td>Banco</td>
+                            <td>Agência</td>
+                            <td>Conta</td>
+                            <td>Banco</td>
+                            <td>Agência</td>
+                            <td>Conta</td>
+                        </tr>
+                        {% for data in transacao %}
+                            <tr>
+                                <td>{{ data.banco_origem }}</td>
+                                <td>{{ data.agencia_origem }}</td>
+                                <td>{{ data.conta_origem }}</td>
+                                <td>{{ data.banco_destino }}</td>
+                                <td>{{ data.agencia_destino }}</td>
+                                <td>{{ data.conta_destino }}</td>
+                                <td>{{ data.valor }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock %}
