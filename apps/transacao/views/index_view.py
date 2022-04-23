@@ -50,7 +50,7 @@ class TransacaoView(LoginRequiredMixin, View):
                     continue
 
                 try:
-                    Transacao.objects.create(banco_origem=banco_origem,
+                    Transacao.objects.create(user=request.user, banco_origem=banco_origem,
                                              agencia_origem=agencia_origem, conta_origem=conta_origem,
                                              banco_destino=banco_destino, agencia_destino=agencia_destino,
                                              conta_destino=conta_destino, valor=valor, data_hora=data_hora,
