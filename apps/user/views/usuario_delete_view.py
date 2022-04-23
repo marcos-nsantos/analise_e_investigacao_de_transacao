@@ -27,10 +27,6 @@ class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
             raise Http404
         return user
 
-    def get_success_url(self):
-        messages.success(self.request, 'Usuário deletado com sucesso!')
-        return reverse('user:lista')
-
     def dispatch(self, request, *args, **kwargs):
         if self.get_object().id == request.user.id:
             messages.warning(self.request, 'Você não pode deletar a si mesmo!')
