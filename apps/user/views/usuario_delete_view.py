@@ -14,6 +14,13 @@ class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user/deletar_usuario.html'
     context_object_name = 'usuario'
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        messages.success(request, 'Usuário deletado com sucesso!')
+        return redirect('user:lista')
+
     def get_object(self, queryset=None):
         user = super().get_object()
         if user.is_superuser:

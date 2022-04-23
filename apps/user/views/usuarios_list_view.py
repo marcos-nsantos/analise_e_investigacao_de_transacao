@@ -10,4 +10,4 @@ class UsuariosListView(LoginRequiredMixin, ListView):
     context_object_name = 'usuarios'
 
     def get_queryset(self):
-        return User.objects.filter(is_superuser=False)
+        return User.objects.filter(is_superuser=False, is_active=True)
