@@ -9,13 +9,13 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views import View
 
-from ..forms.file_form import FileUploadForm
+from ..forms.file_form import FileUploadModelForm
 from ..models.transacao_model import Transacao
 from ..util.capture_first_csv_date import capture_first_date_time_from_csv_file
 
 
 class TransacaoView(LoginRequiredMixin, View):
-    form_class = FileUploadForm
+    form_class = FileUploadModelForm
     template_name = 'transacao/index.html'
 
     def get(self, request):
@@ -25,8 +25,12 @@ class TransacaoView(LoginRequiredMixin, View):
     def post(self, request):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            csv_file = request.FILES['file'].read().decode('utf-8')
+            csv_file = request.FILES['arquivo'].read().decode('utf-8')
             datetime_fist_line = capture_first_date_time_from_csv_file(csv_file)
+            print(datetime_fist_line)
+
+            instance = form.save(commit=False)
+            instance.save()
 
             error_messages = []
             for row in reader(csv_file.splitlines(), delimiter=','):
@@ -50,7 +54,7 @@ class TransacaoView(LoginRequiredMixin, View):
                     continue
 
                 try:
-                    Transacao.objects.create(user=request.user, banco_origem=banco_origem,
+                    Transacao.objects.create(user=request.user, banco_origem=banco_origem, arquivo=instance,
                                              agencia_origem=agencia_origem, conta_origem=conta_origem,
                                              banco_destino=banco_destino, agencia_destino=agencia_destino,
                                              conta_destino=conta_destino, valor=valor, data_hora=data_hora,

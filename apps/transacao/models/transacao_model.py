@@ -2,8 +2,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
+from .arquivo_model import Arquivo
+
 
 class Transacao(models.Model):
+    arquivo = models.ForeignKey(Arquivo, on_delete=models.CASCADE, verbose_name=_('Arquivo'))
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Usuário'))
     banco_origem = models.CharField(_('Banco origem'), max_length=30, null=False, blank=False)
     agencia_origem = models.CharField(_('Agência origem'), max_length=10, null=False, blank=False)
