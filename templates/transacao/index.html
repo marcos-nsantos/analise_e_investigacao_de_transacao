@@ -44,6 +44,7 @@
                 <tr>
                     <td style="font-weight: bold">Data Transação</td>
                     <td style="font-weight: bold">Data Importação</td>
+                    <td style="font-weight: bold">Quem Importou</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,7 @@
                     <tr>
                         <td>{{ transacao.data_hora }}</td>
                         <td>{{ transacao.created_at }}</td>
+                        <td>{{ transacao.user }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
