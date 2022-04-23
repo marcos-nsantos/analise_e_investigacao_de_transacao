@@ -1,3 +1,5 @@
+{% load static %}
+
 {% if messages %}
     {% for message in messages %}
         <div class="notification {{ message.tags }}" role="alert">
@@ -6,3 +8,5 @@
         </div>
     {% endfor %}
 {% endif %}
+
+<script src="{% static 'partials/js/notification.js' %}"></script>
