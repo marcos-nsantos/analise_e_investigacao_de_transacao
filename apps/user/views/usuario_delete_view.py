@@ -23,7 +23,7 @@ class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         user = super().get_object()
-        if user.is_superuser:
+        if user.is_superuser or not user.is_active:
             raise Http404
         return user
 
