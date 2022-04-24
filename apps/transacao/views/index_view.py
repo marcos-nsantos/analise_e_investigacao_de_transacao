@@ -27,12 +27,11 @@ class TransacaoView(LoginRequiredMixin, View):
         if form.is_valid():
             csv_file = request.FILES['arquivo'].read().decode('utf-8')
             datetime_fist_line = capture_first_date_time_from_csv_file(csv_file)
-            print(datetime_fist_line)
 
             instance = form.save(commit=False)
             instance.save()
 
-            error_messages = []
+            transacoes = []
             for row in reader(csv_file.splitlines(), delimiter=','):
                 banco_origem = row[0]
                 agencia_origem = row[1]
@@ -53,21 +52,20 @@ class TransacaoView(LoginRequiredMixin, View):
                 if data_hora.date() != datetime_fist_line.date():
                     continue
 
-                try:
-                    Transacao.objects.create(user=request.user, banco_origem=banco_origem, arquivo=instance,
-                                             agencia_origem=agencia_origem, conta_origem=conta_origem,
-                                             banco_destino=banco_destino, agencia_destino=agencia_destino,
-                                             conta_destino=conta_destino, valor=valor, data_hora=data_hora,
-                                             data=data_hora.date())
-                except IntegrityError as e:
-                    if 'Duplicate entry' in str(e):
-                        error_messages.append(f'A transação do banco de origem {banco_origem}, agência '
-                                              f'{agencia_origem}, conta {conta_origem} para o banco de '
-                                              f'destino {banco_destino}, agência {agencia_destino}, conta '
-                                              f'{conta_destino} já foi inserida com a data {data_hora.date()}.')
+                transacao = Transacao(user=request.user, banco_origem=banco_origem, arquivo=instance,
+                                      agencia_origem=agencia_origem, conta_origem=conta_origem,
+                                      banco_destino=banco_destino, agencia_destino=agencia_destino,
+                                      conta_destino=conta_destino, valor=valor, data_hora=data_hora,
+                                      data=data_hora.date())
+                transacoes.append(transacao)
 
-            if error_messages:
-                for error_message in error_messages:
-                    messages.error(request, error_message)
+            if transacoes:
+                try:
+                    Transacao.objects.bulk_create(transacoes)
+                    messages.success(request, f'{len(transacoes)} transações foram importadas com sucesso.')
+                except IntegrityError as e:
+                    messages.error(request, f'Não foi possível importar uma ou mais transações. Verifique se o '
+                                            f'arquivo possui transações duplicadas ou se já existem transações '
+                                            f'importadas.')
 
         return render(request, self.template_name, {'form': form, 'transacoes': Transacao.objects.all()})
